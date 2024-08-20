@@ -1,1 +1,1 @@
-Place your own images in the input folder.
+### Place your own images here.
