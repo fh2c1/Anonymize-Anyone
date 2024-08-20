@@ -16,8 +16,8 @@ This repository contains the implementation of the following paper:
 <img src="./assets/Fig2.png" width="100%">
 
 We propose **Anonymize Anyone**, a text-to-face synthesis using a Diffusion Model that considers Race Fairness.
-	We used the facial mask from the facial segmentation model to prompt edits in specific facial regions. The Stable Diffusion v2 Inpainting model used as our baseline, trained on the curated Asian dataset. We applied **ℒ𝐹𝐹𝐸**(Focused Feature Enhancement Loss) to enhance performance even with limited data and used **ℒ𝑑𝑖𝑓𝑓**(Difference Loss) to address the catastrophic forgetting issue of the pre-trained model. Finally, we employed a model trained with **Simple Preference Optimization** (SimPO) to generate more refined and enhanced images.
-\mathcal{L}_{DIFF}
+	We used the facial mask from the facial segmentation model to prompt edits in specific facial regions. The Stable Diffusion v2 Inpainting model used as our baseline, trained on the curated Asian dataset. We applied **ℒ𝐹𝐹𝐸**(Focused Feature Enhancement Loss) to enhance performance even with limited data and used **ℒ𝑫𝑰𝑭𝑭**(Difference Loss) to address the catastrophic forgetting issue of the pre-trained model. Finally, we employed a model trained with **Simple Preference Optimization** (SimPO) to generate more refined and enhanced images.
+
 <be>
 
 ## 💡 Colab Demo
