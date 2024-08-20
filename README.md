@@ -171,22 +171,22 @@ accelerate launch --mixed_precision="fp16" train_diffusion_simpo.py \
   --output_dir="SIMPO"
 ```
 
-## Important Args
+### Important Args
 
-### General
+#### **General**
 
 - `--pretrained_model_name_or_path` what model to train/initalize from
 - `--output_dir` where to save/log to
 - `--seed` training seed (not set by default)
 
-### SimPO
+#### **SimPO**
 
 - `--beta` Beta parameter for SimPO
 - `--gamma_beta_ratio` Gamma/beta ratio for SimPO
 - `--loss_type` SimPO loss type (sigmoid, hinge, etc.)
 
 
-### Optimizers/learning rates
+#### **Optimizers/learning rates**
 
 - `--max_train_steps` How many train steps to take
 - `--gradient_accumulation_steps`
@@ -199,21 +199,21 @@ accelerate launch --mixed_precision="fp16" train_diffusion_simpo.py \
 - `--lr_warmup_steps` number of scheduler warmup steps
 - `--use_adafactor` Adafactor over Adam (lower memory, default for SDXL)
 
-### Data
+#### **Data**
 - `--dataset_name` if you want to switch from Pick-a-Pic
 - `--cache_dir` where dataset is cached locally **(users will want to change this to fit their file system)**
 - `--resolution` defaults to 512
 - `--random_crop` and `--no_hflip` changes data aug
 - `--dataloader_num_workers` number of total dataloader workers
 
-### LoRA rank
+### **LoRA rank**
 - `--rank` LoRA rank
 
-### Validation
+#### **Validation**
 - `--run_validation` Whether to run validation
 - `--validation_steps` How often to run validation
 
-### Additional SimPO-specific args
+#### **Additional SimPO-specific args**
 - `--vae_encode_batch_size` Batch size to use for VAE encoding of the images
 - `--report_to` The integration to report the results and logs to
 - `--mixed_precision` Whether to use mixed precision training
