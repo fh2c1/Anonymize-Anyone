@@ -34,6 +34,7 @@ Check out our models on Hugging Face:
 ## :heavy_check_mark: Updates
 - [08/2024] [Colab Demo](https://github.com/dusrb37/Anonymize-Anyone) for Anonymize Anyone released.
 - [08/2024] [Training code](https://github.com/dusrb37/Anonymize-Anyone) for Anonymize Anyone released.
+- [08/2024] [Training code](https://github.com/dusrb37/Anonymize-Anyone) for SimPO-Diffusion released.
 - [08/2024] [Inference code](https://github.com/dusrb37/Anonymize-Anyone) for Anonymize Anyone released.
 
 ## :hammer: Setup
