@@ -23,7 +23,7 @@ We propose **Anonymize Anyone**, a text-to-face synthesis using a Diffusion Mode
 ## 💡 Colab Demo
 Try out our colab demo here [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/dusrb37/Anonymize-Anyone/blob/main/demo_anonymize_anyone.ipynb)
 
-## 💡 Hugging Face
+## 💡 Model Checkpoints
 Check out our models on Hugging Face:
 
 [![Anonymize-Anyone](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Anonymize--Anyone-blue)](https://huggingface.co/fh2c1/Anonymize-Anyone)
@@ -87,7 +87,7 @@ Find the output in `./segmentation/output`
 ## :running_man: Train
 
 ### 1. Train for the inpainting model
-### [Model Checkpoint for inpainting](https://huggingface.co/fh2c1/Anonymize-Anyone).
+
 
 #### **Training with Focused Feature Enhancement Loss & Difference Loss**
 
@@ -145,7 +145,6 @@ accelerate launch ./train_anonymize_inpaint.py \
 
 
 ### 2. Train for SimPO
-### [Model Checkpoint for Preference Optimization](https://huggingface.co/fh2c1/SimPO-LoRA).
 
 Run the shell script below for training SimPO. 
 
@@ -223,7 +222,6 @@ accelerate launch --mixed_precision="fp16" train_diffusion_simpo.py \
 <be>
 
 ## ✈️ Inference
-___Model Checkpoint is [here](https://huggingface.co/dusrb37/Anonymize-Anyone)___
 
 To inference, Checkout - `inference.ipynb` for mode details.
 
@@ -235,5 +233,5 @@ For your dataset, change the path of the image and mask.
 ## ❤️ Acknowledgement
 
 We thank the authors for their great work. 
-- We were heavily inspired by [DreamBooth](https://arxiv.org/abs/2208.12242) for how train effectively with a small dataset and [DiffusionDPO](https://arxiv.org/abs/2311.12908) for how optimize human preferences into diffusion model.
-- Our training pipeline was modified from the [the diffusers library](https://github.com/huggingface/diffusers).
+- We were heavily inspired by [DreamBooth](https://arxiv.org/abs/2208.12242) for how train effectively with a small dataset and [SimPO](https://arxiv.org/abs/2405.14734) for how to optimize Simple Preference to model.
+- Our inpainting training pipeline was modified from [the diffusers library](https://github.com/huggingface/diffusers).
