@@ -59,7 +59,7 @@ pip install -r requirements.txt
 1. Download the pretrained model from [Google Drive](https://drive.google.com/file/d/1-0K1gMrjq0C7ssP4UDGePBr8CND4cAJC/view).
 2. Download the annotations from  [Google Drive](https://drive.google.com/file/d/1zAEiTPFPky7ilQ1Ou-Kzi9sPVdvx2nnt/view)
 
-3. Put the model under `pretrained` , 'annotations' as follows:
+3. Put the model under `pretrained` , `annotations` as follows:
     ```
     Anonymize-Anyone
     └── segmentation
