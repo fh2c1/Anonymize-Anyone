@@ -150,7 +150,7 @@ accelerate launch ./train_anonymize_inpaint.py \
 Run the shell script below for training SimPO. 
 
 ```bash
-# from ./tarin_diffusion_dpo.sh
+# from ./tarin_diffusion_simpo.sh
 export MODEL_NAME="stabilityai/stable-diffusion-2-1"
 export DATASET_NAME="yuvalkirstain/pickapic_v2"
 
