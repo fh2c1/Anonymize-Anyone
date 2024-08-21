@@ -211,7 +211,7 @@ accelerate launch ./train_diffusion_simpo.py \
 - `--random_crop` and `--no_hflip` changes data aug
 - `--dataloader_num_workers` number of total dataloader workers
 
-### **LoRA rank**
+#### **LoRA rank**
 - `--rank` LoRA rank
 
 #### **Validation**
