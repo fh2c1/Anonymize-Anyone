@@ -21,7 +21,7 @@ We propose **Anonymize Anyone**, a text-to-face synthesis using a Diffusion Mode
 <be>
 
 ## 💡 Colab Demo
-Try out our colab demo here [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/dusrb37/Anonymize-Anyone/blob/main/demo_anonymize_anyone.ipynb)
+Try out our colab demo here [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fh2c1/Anonymize-Anyone/blob/main/demo_anonymize_anyone.ipynb)
 
 ## 💡 Model Checkpoints
 Check out our models on Hugging Face:
