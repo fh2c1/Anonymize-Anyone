@@ -67,6 +67,27 @@ VALIDATION_PROMPTS = [
     "Astronaut in a jungle, cold color palette, muted colors, detailed, 8k",
     "A photo of beautiful mountain with realistic sunset and blue lake, highly detailed, masterpiece",
     
+    # Asian Faces
+    "An Asian man in his early 20s with a sharp jawline and bright eyes, clear skin, professional photo, 4k, realistic",
+    "A middle-aged Asian businessman with slight wrinkles and confident smile, wearing a suit, professional headshot, 4k",
+    "An elderly Asian man with white hair and gentle eyes, natural lighting, professional portrait, 4k",
+    "A young Asian woman with long straight black hair and bright eyes, soft smile, studio lighting, 4k",
+    "An Asian businesswoman in her 40s with short professional haircut, confident pose, office background, 4k",
+    
+    # White/Caucasian Faces
+    "A young Caucasian man with defined features and natural expression, studio lighting, professional headshot, 4k",
+    "A middle-aged white businessman with distinguished look, wearing suit, professional portrait, 4k",
+    "An elderly white man with gray hair and kind expression, natural lighting, professional photo, 4k",
+    "A young white woman with natural makeup, professional headshot, studio lighting, 4k",
+    "A middle-aged white woman executive, confident pose, office setting, professional portrait, 4k",
+    
+    # Diverse Age Groups
+    "A young adult with clear skin and bright expression, professional headshot, studio lighting, 4k",
+    "A middle-aged person with confident smile, business attire, office background, 4k",
+    "An elderly person with gentle expression, natural lighting, professional portrait, 4k",
+    "A professional in their 30s, business casual, modern office setting, 4k",
+    "A senior executive with distinguished appearance, corporate environment, professional photo, 4k"
+    
     # # Asian
     # "An Asian man in his early 20s with a sharp jawline and bright, curious eyes. 4k, realistic photo.",
     # "A middle-aged Asian businessman with slight wrinkles and a confident smile. Wearing a suit. no beard. 4k, realistic photo.",
@@ -135,7 +156,7 @@ def import_model_class_from_model_name_or_path(pretrained_model_name_or_path: st
         raise ValueError(f"{model_class} is not supported.")
 
 
-def log_validation(args, unet, accelerator, weight_dtype, epoch, is_final_validation=False):
+def log_validation(args, unet, accelerator, weight_dtype, epoch, global_step, is_final_validation=False):
     logger.info(f"Running validation... \n Generating images with prompts:\n" f" {VALIDATION_PROMPTS}.")
 
     # create pipeline
@@ -177,6 +198,28 @@ def log_validation(args, unet, accelerator, weight_dtype, epoch, is_final_valida
                     ]
                 }
             )
+
+
+    # Additional validation images generation
+    if global_step % args.checkpointing_steps == 0:
+        save_path = os.path.join(args.output_dir, f"validation_images_step_{global_step}")
+        os.makedirs(save_path, exist_ok=True)
+        
+        for idx, prompt in enumerate(VALIDATION_PROMPTS):
+            for i in range(30):
+                with context:
+                    image = pipeline(
+                        prompt, 
+                        num_inference_steps=25, 
+                        generator=torch.Generator(device=accelerator.device).manual_seed(args.seed + i if args.seed else i)
+                    ).images[0]
+                    
+                    # Save the image
+                    image_path = os.path.join(save_path, f"prompt_{idx}_sample_{i}.png")
+                    image.save(image_path)
+
+
+
 
     # Also log images without the LoRA params for comparison.
     if is_final_validation:
@@ -262,7 +305,7 @@ def parse_args(input_args=None):
     parser.add_argument(
         "--output_dir",
         type=str,
-        default="diffusion-simpo-lora",
+        default="diffusion-simpo-lora-1106",
         help="The output directory where the model predictions and checkpoints will be written.",
     )
     parser.add_argument(
@@ -363,6 +406,20 @@ def parse_args(input_args=None):
         default="sigmoid",
         help="simpo loss type. Can be one of 'sigmoid' (default), 'ipo', or 'cpo'",
     )
+
+    parser.add_argument(
+        "--validation_image_dir",
+        type=str,
+        help="Directory to save validation images",
+    )
+    parser.add_argument(
+        "--config_name",
+        type=str,
+        required=True,
+        help="Configuration name for creating subdirectory (e.g., 'lr1e-5_b2.0_g0.25')",
+    )
+
+
     parser.add_argument(
         "--learning_rate",
         type=float,
@@ -478,7 +535,7 @@ def parse_args(input_args=None):
     parser.add_argument(
         "--tracker_name",
         type=str,
-        default="diffusion-simpo-lora",
+        default="diffusion-simpo-lora-1106",
         help=("The name of the tracker to report results to."),
     )
 
@@ -962,7 +1019,7 @@ def main(args):
 
                     if args.run_validation and global_step % args.validation_steps == 0:
                         log_validation(
-                            args, unet=unet, accelerator=accelerator, weight_dtype=weight_dtype, epoch=epoch
+                            args, unet=unet, accelerator=accelerator, weight_dtype=weight_dtype, epoch=epoch, global_step=global_step  # global_step 전달
                         )
             logs = {
                 "loss": loss.detach().item(),
@@ -972,6 +1029,24 @@ def main(args):
                 "reward_accuracies": (model_losses_w < model_losses_l).float().mean().detach().item(),
                 "lr": lr_scheduler.get_last_lr()[0],
             }
+
+            logs.update({
+                # Margin
+                "preference_margin": pi_logratios.mean().detach().item(),          # reward margin
+                "margin_distribution": logits.mean().detach().item(),              # margin distribution
+                "reward_diff": (model_losses_l - model_losses_w).mean().detach().item(),  
+                
+                # Length & Stability
+                "training_stability": losses.std().detach().item(),                
+                "log_prob_diff": model_diff.mean().detach().item(),               # likelihood 
+                "reward_consistency": implicit_acc,                               
+                
+                # additional monitoring
+                "loss_ratio": (model_losses_w / model_losses_l).mean().detach().item(),  # loss ratio
+                "gamma_effect": args.gamma_beta_ratio * args.beta    
+
+            })
+
             progress_bar.set_postfix(**logs)
             accelerator.log(logs, step=global_step)
 
@@ -997,6 +1072,7 @@ def main(args):
                 accelerator=accelerator,
                 weight_dtype=weight_dtype,
                 epoch=epoch,
+                global_step=global_step,  
                 is_final_validation=True,
             )
 
