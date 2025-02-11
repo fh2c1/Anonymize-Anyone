@@ -28,7 +28,7 @@ Check out our models on Hugging Face:
 
 [![Anonymize-Anyone](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Anonymize--Anyone-blue)](https://huggingface.co/fh2c1/Anonymize-Anyone)
 
-[![SimPO-LoRA](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-SimPO--LoRA-blue)](https://huggingface.co/fh2c1/SimPO-LoRA)
+[![SimPO-LoRA](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-SimPO--LoRA-blue)](https://huggingface.co/fh2c1/SimPO-LoRA-1.2)
 
 
 ## :heavy_check_mark: Updates
